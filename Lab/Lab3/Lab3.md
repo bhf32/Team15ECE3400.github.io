@@ -246,3 +246,235 @@ Else{
 With the enable implemented we can now turn the tune on/off with a simple enable signal coming from the Arduino. In [this video](https://www.youtube.com/watch?v=aGEa08fkF8c), the top channel shows the output of the Arduino (the enable signal) and the other channel shows the three tone triangle wave.
 
 
+```
+//=======================================================
+// ECE3400 Fall 2017
+// Lab 3: Template top-level module
+//
+// Top-level skeleton from Terasic
+// Modified by Claire Chen for ECE3400 Fall 2017
+//=======================================================
+`define ONE_SEC 25000000
+module DE0_NANO(
+ //////////// CLOCK //////////
+ CLOCK_50,
+ //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+ GPIO_0_D,
+ GPIO_0_IN,
+ CLKDIVIDER_440
+);
+  //=======================================================
+  //  PARAMETER declarations
+  //=======================================================
+  localparam ONE_SEC = 25000000; // one second in 25MHz clock cycles
+ 
+  //=======================================================
+  //  PORT declarations
+  //=======================================================
+  //////////// CLOCK //////////
+  input         	  CLOCK_50;
+  //////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+  inout   	[33:0]  GPIO_0_D;
+  input    	[1:0]  GPIO_0_IN;
+
+ reg [8:0] sound_val; 
+  
+  //local parameter
+ input CLKDIVIDER_440; 
+ //sound variable
+ reg     	CLOCK_25;
+ 
+ //reg [7:0] square_440;
+ 
+ assign GPIO_0_D[2] = sound_val[0]; //sound_freq[0]
+ assign GPIO_0_D[4] = sound_val[1];
+ assign GPIO_0_D[6] = sound_val[2];
+ assign GPIO_0_D[8] = sound_val[3];
+ assign GPIO_0_D[10] = sound_val[4];
+ assign GPIO_0_D[12] = sound_val[5];
+ assign GPIO_0_D[14] = sound_val[6];
+ assign GPIO_0_D[16] = sound_val[7];
+ reg[15:0] counter;
+ reg[15:0] counter2; 
+ //reg[8:0] cycle = CLKDIVIDER_440/256/2;
+  // Generate 25MHz clock for VGA, FPGA has 50 MHz clock
+	always @ (posedge CLOCK_50) begin
+    	CLOCK_25 <= ~CLOCK_25;
+	end // always @ (posedge CLOCK_50) 
+
+ 
+
+ 
+//sound state machine
+always @(posedge CLOCK_25) begin
+
+ 
+
+if(counter < 110 && counter >= 0) begin 
+	counter <= counter + 1;
+ 
+ end
+ 
+ else begin
+	
+ if (counter2 == 0) begin
+  counter2 <= counter2 + 1;
+  sound_val <= sound_val + 1;
+  counter <= 0; 
+ end
+ 
+ else if(counter2 <= 254) begin
+  counter2 <= counter2 + 1;
+  sound_val <= sound_val + 1;
+  counter <= 0; 
+ end
+ 
+ else if(counter2 < 509) begin 
+	counter2 <= counter2 + 1;
+	sound_val <= sound_val - 1; 
+	counter <= 0; 
+ end
+ 
+ else begin
+	counter2 <= 0; 
+	sound_val <= 0; 
+	counter <= 0; 
+ end
+ 
+ end
+ 
+end
+
+ 
+endmodule 
+
+
+///////////////////////////
+/*module DE0_NANO
+(
+  input [9:0] addr,
+  input clk, 
+  output reg [7:0] q
+);
+
+  // Declare the ROM variable
+  reg [7:0] sine[628:0];
+
+  initial
+  begin
+     sine[0] <= 8'b10000000;
+     //... remaining contents of sine table//
+     sine[628] <= 8'b10000000;
+  end
+
+  // Read from requested address of ROM
+  always @ (posedge clk) begin
+    q <= sine[addr];
+  end
+  
+ endmodule */
+```
+
+
+```
+module makeTone(
+	reset,
+	CLKDIVIDER,
+	GPIO_0_D,
+	//sound_val,
+	CLOCK_50
+); 
+
+//=======================================================
+  //  PARAMETER declarations
+  //=======================================================
+  localparam ONE_SEC = 25000000; // one second in 25MHz clock cycles
+ 
+  //=======================================================
+  //  PORT declarations
+  //=======================================================
+  //////////// CLOCK //////////
+  inout [33:0] GPIO_0_D;
+  input reset; 
+  input CLOCK_50;
+  input [31:0] CLKDIVIDER; 
+  
+  reg [8:0] sound_val; 
+  reg enable_sound = 1'b1;
+  reg tone_duration_counter = 0; 
+  reg tone_number_counter = 2'b0; 
+  reg [2:0] SW; 
+
+  
+ //sound variable
+ reg     	CLOCK_25;
+
+ assign GPIO_0_D[2] = sound_val[0]; //sound_freq[0]
+ assign GPIO_0_D[4] = sound_val[1];
+ assign GPIO_0_D[6] = sound_val[2];
+ assign GPIO_0_D[8] = sound_val[3];
+ assign GPIO_0_D[10] = sound_val[4];
+ assign GPIO_0_D[12] = sound_val[5];
+ assign GPIO_0_D[14] = sound_val[6];
+ assign GPIO_0_D[16] = sound_val[7];
+ reg[15:0] counter;
+ reg[15:0] counter2; 
+ reg[31:0] cycle;
+ assign cycle = CLKDIVIDER/256;
+ 
+  // Generate 25MHz clock for VGA, FPGA has 50 MHz clock
+	always @ (posedge CLOCK_50) begin
+    	CLOCK_25 <= ~CLOCK_25;
+	end // always @ (posedge CLOCK_50) 
+
+//sound state machine
+always @(posedge CLOCK_25) begin
+
+if(GPIO_0_D[18] == 1'b1) begin
+
+	if(counter < cycle && counter >= 0) begin 
+		counter <= counter + 1;
+ 
+	end
+	
+	else begin
+	
+		if (counter2 == 0) begin
+			counter2 <= counter2 + 1;
+			sound_val <= sound_val + 1;
+			counter <= 0; 
+		end
+ 
+		 else if(counter2 <= 254) begin
+		  counter2 <= counter2 + 1;
+		  sound_val <= sound_val + 1;
+		  counter <= 0; 
+		 end
+ 
+		 else if(counter2 < 509) begin 
+			counter2 <= counter2 + 1;
+			sound_val <= sound_val - 1; 
+			counter <= 0; 
+		 end
+ 
+		 else begin
+			counter2 <= 0; 
+			sound_val <= 0; 
+			counter <= 0; 
+		 end
+ 
+	end
+ 
+ end
+ 
+ else begin
+	counter2 <= 0; 
+	sound_val <= 0; 
+	counter <= 0; 
+ end
+ 
+end
+
+ 
+endmodule 
+```

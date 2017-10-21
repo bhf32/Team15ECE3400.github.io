@@ -62,6 +62,8 @@ After getting familiar with displaying colors on the VGA monitor, we connected t
 To constantly update the location of the block, we used one case statement so only one block would be colored blue at a time and PositionX and PositionY inputs would be concatenated and evaluated concurrently. We also set the block at the previous location to be the color of the background, to ensure the block’s location is constantly updated.
 
 ```
+always @(posedge CLOCK_25) begin
+
  PositionX = GPIO_0_D[31]; // True if +X, False is -X
  PositionY = GPIO_0_D[33]; // True if +Y, False is -Y
  PositionXandY = {PositionX, PositionY};
@@ -92,6 +94,41 @@ To constantly update the location of the block, we used one case statement so on
 		Array[x][y] = 1'b1; end
 		default: Array[x][y] = 1'b1;
 	endcase
+	
+	if (PIXEL_COORD_X > (10'd60-10'd30) && PIXEL_COORD_X < (10'd60+10'd30) && PIXEL_COORD_Y > (10'd60-10'd30) && PIXEL_COORD_Y < (10'd60+10'd30)) begin
+		if(Array[1'd0][1'd0])begin
+		PIXEL_COLOR = 8'b000_001_11; end
+		else begin
+		PIXEL_COLOR = 8'b101_010_11; end
+		// 
+	end
+	// (0,1)
+	else if (PIXEL_COORD_X > (10'd60-10'd30) && PIXEL_COORD_X < (10'd60+10'd30) && PIXEL_COORD_Y > (10'd60*2-10'd30) && PIXEL_COORD_Y < (10'd60*2+10'd30)) begin
+		if(Array[1'd0][1'd1])begin
+		PIXEL_COLOR = 8'b000_001_11; end
+		else begin
+		PIXEL_COLOR = 8'b101_010_11; end
+	end
+	// (1,0)
+	else if (PIXEL_COORD_X > (10'd60*2-10'd30) && PIXEL_COORD_X < (10'd60*2+10'd30) && PIXEL_COORD_Y > (10'd60-10'd30) && PIXEL_COORD_Y < (10'd60+10'd30)) begin
+		if(Array[1'd1][1'd0])begin
+		PIXEL_COLOR = 8'b000_001_11; end
+		else begin
+		PIXEL_COLOR = 8'b101_010_11; end
+	end
+	// (1,1)
+	else if (PIXEL_COORD_X > (10'd60*2-10'd30) && PIXEL_COORD_X < (10'd60*2+10'd30) && PIXEL_COORD_Y > (10'd60*2-10'd30) && PIXEL_COORD_Y < (10'd60*2+10'd30)) begin
+		if(Array[1'd1][1'd1])begin
+		PIXEL_COLOR = 8'b000_001_11; end
+		else begin
+		PIXEL_COLOR = 8'b101_010_11; end 
+	end
+	
+	else begin
+		PIXEL_COLOR = 8'b101_010_11;
+	end
+	
+end
 ```
 >Figure 4. Code snippet of toggle-input case statement.
 

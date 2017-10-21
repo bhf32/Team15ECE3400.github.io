@@ -12,29 +12,27 @@ From the arrangement of the resistors, we can see that it is a simple binary DAC
 
 	269, 604, 1183 (red), 268, 605, 1186 (green), 178, 468 (blue) 
 
-At the highest input value, 11111111, we would expect the output voltage to be 
+The FPGA outputs a range of 0.0 V to 3.3 V. The 50 ohm internal resistance of the VGA creates a voltage divider with the 8 external resistors.
 
-V = V08+V14+V22= 18+14+12 = 0.875 V
+Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 166
 
-since the VGA colors each take 0-1 V inputs. The FPGA outputs a range of 0-3.3 V, but this is taken into account because of the 50 internal resistance of the VGA, which acts like a voltage divider.
-
-Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 159
-
-3.3 * 5050 + 159= 0.786 V
-
-0.786 V is above 0.75 V and under 1 V, so it falls in the range of the 111 input value. The same method applies to the green and blue inputs. 
+3.3 * 50 / (50 + 166) = 0.764 V
 
 Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167
 
-3.3 * 5050 + 167= 0.760 V
+3.3 * 50 / (50 + 167) = 0.760 V
 
 Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129
 
-3.3 * 5050 + 129= 0.912 V
+3.3 * 50 / (50 + 129) = 0.922 V
+
+These three voltage values are above 0.75 V and under 1 V, so they fall in the range of the 111 input value. The same method applies to the green and blue inputs.
+
+The three bits for each color can vary resulting in lower output voltages and in many different combinations for colors. There are 8 shades of red, 8 shades of green, and 4 shades of blue. This results in 256 shades of mixed RGB color. The vga display adjusts its color with absense of a color at 0v and strongest color at max voltage.
 
 ## Drawing on the Screen
 
-Before we begin the explanation proper, there is some preliminary information to cover.
+Before we begin the explanation of drawing the screen, there is some preliminary information to cover.
 
 There are two modules provided by the template code: the DE0_NANO module and the VGA_DRIVER module. The DE0_NANO module is the main module, responsible for providing a color given a specific pixel. The VGA_DRIVER iterates through every pixel on the monitor, providing these pixels to the DE0_NANO module. Once the VGA_DRIVER receives a color from the DE0_NANO module, it outputs a pixel of that color onto the screen.
 

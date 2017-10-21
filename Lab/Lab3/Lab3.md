@@ -18,15 +18,18 @@ V = V08+V14+V22= 18+14+12 = 0.875 V
 
 since the VGA colors each take 0-1 V inputs. The FPGA outputs a range of 0-3.3 V, but this is taken into account because of the 50 internal resistance of the VGA, which acts like a voltage divider.
 
-Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 159 
+Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 159
+
 3.3 * 5050 + 159= 0.786 V
 
 0.786 V is above 0.75 V and under 1 V, so it falls in the range of the 111 input value. The same method applies to the green and blue inputs. 
 
-Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167 
+Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167
+
 3.3 * 5050 + 167= 0.760 V
 
-Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129 
+Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129
+
 3.3 * 5050 + 129= 0.912 V
 
 ## Drawing on the Screen

@@ -245,7 +245,7 @@ Else{
 
 With the enable implemented we can now turn the tune on/off with a simple enable signal coming from the Arduino. In [this video](https://www.youtube.com/watch?v=aGEa08fkF8c), the top channel shows the output of the Arduino (the enable signal) and the other channel shows the three tone triangle wave.
 
-
+DE0_NANO.v
 ```
 //=======================================================
 // ECE3400 Fall 2017
@@ -375,7 +375,7 @@ endmodule
  endmodule */
 ```
 
-
+makeTone.v
 ```
 module makeTone(
 	reset,

@@ -58,7 +58,38 @@ After getting familiar with displaying colors on the VGA monitor, we connected t
 
 To constantly update the location of the block, we used one case statement so only one block would be colored blue at a time and PositionX and PositionY inputs would be concatenated and evaluated concurrently. We also set the block at the previous location to be the color of the background, to ensure the block’s location is constantly updated.
 
-
+'''
+ PositionX = GPIO_0_D[31]; // True if +X, False is -X
+ PositionY = GPIO_0_D[33]; // True if +Y, False is -Y
+ PositionXandY = {PositionX, PositionY};
+	case(PositionXandY)
+		2'b00: begin
+		Array[x][y] = 1'b0;
+		x = x*1'b0;
+		y = y*1'b0;
+		Array[x][y] = 1'b1; end
+		2'b01: begin
+		Array[x][y] = 1'b0;
+		x = x*1'b0;
+		x = x+1'b1;
+		y=y*1'b0;
+		Array[x][y] = 1'b1; end
+		2'b10: begin
+		Array[x][y] = 1'b0;
+		x = x*1'b0;
+		y = y*1'b0;
+		y = y + 1'b1;
+		Array[x][y] = 1'b1; end
+		2'b11: begin
+		Array[x][y] = 1'b0;
+		x = x*1'b0;
+		x = x + 1'b1;
+		y = y*1'b0;
+		y = y + 1'b1;
+		Array[x][y] = 1'b1; end
+		default: Array[x][y] = 1'b1;
+	endcase
+'''
 >Figure 4. Code snippet of toggle-input case statement.
 
 You can see a video of the blocks moving with toggled inputs [here](https://youtu.be/ciE7AULMfPA)! 

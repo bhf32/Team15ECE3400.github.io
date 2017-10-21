@@ -150,8 +150,7 @@ Unlike a square wave which toggles, a triangle wave ramps up and down in one cyc
 
 ## Three-frequency tune
 
-The program used to generate three distinct frequencies is divided into two modules: makeTone and DE0_NANO2. makeTone uses the same structure as the program used to generate a single frequency tone as described above. Here’s the version of the single tone code used for this section 
-…..
+The program used to generate three distinct frequencies is divided into two modules: makeTone and DE0_NANO2. makeTone uses the same structure as the program used to generate a single frequency tone as described above.
 
 DE0_NANO2 is at the top of our project’s hierarchy, it controls which frequency is played and contains the logic to detect a sound enable signal. The module uses two additional variables to keep track of the sound: tone_duration_counter tracks how long the current tone has played and tone_number_counter tracks which frequency is being played. The always block of the module contains an if-else branch that decides which tone to play based on the value tone_number_counter. The logic for the three tones in the if-elseif branches is as follows:
 
@@ -167,9 +166,6 @@ DE0_NANO2 is at the top of our project’s hierarchy, it controls which frequenc
 	}
 
 Additionally, there is an else branch in DE0_NANO2 that disables the sound and resets the tone counter to the first one so that the tune can loop. 
-
-Here’s the code for the DE0_NANO2 module
-….
 
 Since the tone’s frequency changes, we have to do some additional calculation to determine 1) how many cycles the triangle wave should take to go from 0 to 255 and back to 0 and 2) how often to increment the wave output value to meet the timing requirement of 1. Here’s the math:
 

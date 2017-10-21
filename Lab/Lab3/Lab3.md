@@ -32,7 +32,7 @@ To test if we were generating a correct wave at the correct frequency, we tested
 
 ## Triangle Wave
 
-To generate a triangle wave, we followed similar logic as the square wave, but the state machine was a little more complex, and we used an [8-bit R2R DAC] (http://www.bourns.com/docs/Product-Datasheets/R2R.pdf) to convert an 8 bit digital output to analog voltages. 
+To generate a triangle wave, we followed similar logic as the square wave, but the state machine was a little more complex, and we used an [8-bit R2R DAC](http://www.bourns.com/docs/Product-Datasheets/R2R.pdf) to convert an 8 bit digital output to analog voltages. 
 
 ![](./Lab3Photos/OneTone.jpg)
 
@@ -40,7 +40,7 @@ To generate a triangle wave, we followed similar logic as the square wave, but t
 
 Unlike a square wave which toggles, a triangle wave ramps up and down in one cycle (from 0 to 255 and back down). As a result, we had two counters:
 1) Counter: Kept track of the number of CPU cycles that must pass until the next wave is generated. We calculated this by taking 	the total number of CPU cycles for toggling (calculated above) by 255 (one ramp). This gives us approximately 110 cycles. 
-2) Counter2: This was used to keep track of our count up and count down. When counter is 110, we check the value of counter 2 and output the respective value to the FPGA. The range of this counter was 0 to 509 (255*2 to account for a ramp up and down). 
+2) Counter2: This was used to keep track of our count up and count down. When counter is 110, we check the value of counter 2 and output the respective value to the FPGA. The range of this counter was 0 to 509 (255 * 2 to account for a ramp up and down). 
  
 
 ![](./Lab3Photos/tri_wave.jpg)
@@ -89,11 +89,11 @@ These values match the code for the single tone 440 Hz triangle wave. CLKDIVIDER
 
 In order to toggle the tune that we created on and off, we introduced an enable signal that comes from the Arduino. The signal outputs from one of the digital pins on the Arduino and inputs to one of the default pins on the FPGA - in this case we used pin 18. Since a logic high signal coming from the Arduino is 5V and a logic high input for the FPGA must be 3.3V, we had to create a voltage divider circuit to scale the signal coming from the Arduino. To make this circuit we placed two resistors in series with resistances of 330 Ohms and 220 Ohms. 
 
-![](./Lab3Photos/acousticsCircuit)
+![](./Lab3Photos/acousticsCircuit.jpg)
 
 > Figure xx. Voltage divider circuitry. 
 
-![](./Lab3Photos/lab3acousticblock)
+![](./Lab3Photos/lab3acousticblock.jpg)
 
 >Figure xx. Block diagram of our pins and circuitry.
 

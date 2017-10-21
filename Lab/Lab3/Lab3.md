@@ -123,7 +123,7 @@ To test if we were generating a correct wave at the correct frequency, we tested
 
 ![](./Lab3Photos/square_wave.jpg)
 
->Figure xx. Square wave at 440 Hz. 
+>Figure 5. Square wave at 440 Hz. 
 
 ## Triangle Wave
 
@@ -131,7 +131,7 @@ To generate a triangle wave, we followed similar logic as the square wave, but t
 
 ![](./Lab3Photos/OneTone.jpg)
 
->Figure xx. Set up with 8 bit DAC.
+>Figure 6. Set up with 8 bit DAC.
 
 Unlike a square wave which toggles, a triangle wave ramps up and down in one cycle (from 0 to 255 and back down). As a result, we had two counters:
 1) Counter: Kept track of the number of CPU cycles that must pass until the next wave is generated. We calculated this by taking 	the total number of CPU cycles for toggling (calculated above) by 255 (one ramp). This gives us approximately 110 cycles. 
@@ -140,7 +140,7 @@ Unlike a square wave which toggles, a triangle wave ramps up and down in one cyc
 
 ![](./Lab3Photos/tri_wave.jpg)
 
->Figure xx. Triangle wave at 440 Hz. 
+>Figure 7. Triangle wave at 440 Hz. 
 
 ## Three-frequency tune
 
@@ -186,15 +186,15 @@ In order to toggle the tune that we created on and off, we introduced an enable 
 
 ![](./Lab3Photos/acousticsCircuit.jpg)
 
-> Figure xx. Voltage divider circuitry. 
+> Figure 8. Voltage divider circuitry. 
 
 ![](./Lab3Photos/lab3acousticblock.jpg)
 
->Figure xx. Block diagram of our pins and circuitry.
+>Figure 9. Block diagram of our pins and circuitry.
 
 To test the enable signal, we created a simple Arduino Uno program that tells the digital pin to output a logic high for three seconds and then a logic low for one second. In makeTone we added a conditional statement within the always block:
 
-'''
+```
 If pin GPIO_0_D_18 receives a logic high signal from Arduino{
 	Increment counters
 Play current tone
@@ -204,7 +204,7 @@ Else{
 	Reset all counters 
 }
 
-'''
+```
 
 With the enable implemented we can now turn the tune on/off with a simple enable signal coming from the Arduino. In [this video](https://www.youtube.com/watch?v=aGEa08fkF8c), the top channel shows the output of the Arduino (the enable signal) and the other channel shows the three tone triangle wave.
 

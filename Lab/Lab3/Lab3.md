@@ -59,7 +59,7 @@ After getting familiar with displaying colors on the VGA monitor, we connected t
 ![](./Lab3Photos/onebox.png)
 >Figure 3. Display of grid with one colored block and the rest as background.
 
-To constantly update the location of the block, we used one case statement so only one block would be colored blue at a time and PositionX and PositionY inputs would be concatenated and evaluated concurrently. We also set the block at the previous location to be the color of the background, to ensure the block’s location is constantly updated.
+To constantly update the location of the block, we used one case statement so only one block would be colored blue at a time and PositionX and PositionY inputs would be concatenated and evaluated concurrently. We also set the block at the previous location to be the color of the background, to ensure the block’s location is constantly updated. We originally tried using if else statements but never could get the logic high/low from a gpio pin to assign to a variable true/false to work.
 
 ```
 always @(posedge CLOCK_25) begin

@@ -2,7 +2,7 @@
 
 ## Overview of port declarations and initializations
 
-To declare variables in Verilog, we use input, output, registers and wires. Input and output define the variable as something that will come in and something that will go out, respectively. Registers are used to store information (such as state variables), and wires literally behave as simple wires with arbitrary width. Follow [_these rules_] (https://inst.eecs.berkeley.edu/~cs150/Documents/Nets.pdf)  to use them correctly!
+To declare variables in Verilog, we use input, output, registers and wires. Input and output define the variable as something that will come in and something that will go out, respectively. Registers are used to store information (such as state variables), and wires literally behave as simple wires with arbitrary width. Follow [these rules] (https://inst.eecs.berkeley.edu/~cs150/Documents/Nets.pdf)  to use them correctly!
 
 To initialize pins on the FPGA, we use the default pin registers (GPIO_0_D) that initializes all the pins as inputs and outputs (use inout). 
 
@@ -26,6 +26,7 @@ Within our state machine, we first check if our counter is equal to 0; if the co
 To test if we were generating a correct wave at the correct frequency, we tested on the oscilloscope as well as with a speaker. This is what the wave should look like: 
 
 (./Lab3Photos/square_wave.jpg)
+
 >Figure xx. Square wave at 440 Hz. 
 
 

@@ -52,6 +52,7 @@ In the always@(posedge CLOCK_25) block, we then created a 2x2 grid on the VGA mo
 
 After getting familiar with displaying colors on the VGA monitor, we connected two toggle inputs to move the block in the X- and Y- directions on the screen. The 2x2 array we created corresponds to the block’s location. If the array element (Array[x][y]) is 0, the block at that corresponding location (see Figure 2) would be the same color as the background, pink. If the element is 1, the block appears as blue. The x-index of the array is toggled by grounding the GPIO_0_D[31] pin, and the y-index of the array is toggled by grounding the GPIO_0_D[33] pin. The array element itself represents whether or not the blue block appears.
 
+![](./Lab3Photos/2x2 grid.png)
 >Figure 2. 2x2 Grid and array indices.
 
 >Figure 3. Display of grid with one colored block and the rest as background.

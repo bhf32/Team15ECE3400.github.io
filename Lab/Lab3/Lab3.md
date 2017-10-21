@@ -6,29 +6,29 @@ In this lab, we will configure an FPGA to be able draw on a screen and send a �
 
 ## DAC 
 
-Each of the 3 RGB ports takes in analog input of 0-1V; FPGA outputs 3.3 V max, as seen in from this [link.](http://valhalla.altium.com/Learning-Guides/CR0113%20VGA%20-%208-bit%20VGA%20Controller.pdf)
+Each of the 3 RGB ports takes in analog input of 0-1V. FPGA outputs 3.3 V max, as seen in from this [link.](http://valhalla.altium.com/Learning-Guides/CR0113%20VGA%20-%208-bit%20VGA%20Controller.pdf)
 
-From the arrangement of the resistors, we can see that it is a simple binary DAC. Using the example in the datasheet and information provided from the lab 3 instructions, the red cable takes 3 bits of input (the first left 3 resistors), the green takes 3 bits (the next three resistors), and the blue takes 2 bits (the last two right resistors). We can confirm the binary relationship between the resistors and the color bit sizes by looking at the resistances from left to right: 
+From the arrangement of the resistors, we can see that it is a simple binary DAC. Using the example in the datasheet and information provided from the lab 3 instructions, the red cable takes 3 bits of input (the first left 3 resistors), the green takes 3 bits (the next three resistors), and the blue takes 2 bits (the last two right resistors). We can confirm the binary relationship between the resistors and the color bit sizes by measuring the resistances from left to right: 
 
 	269, 604, 1183 (red), 268, 605, 1186 (green), 178, 468 (blue) 
 
-The FPGA outputs a range of 0.0 V to 3.3 V. The 50 ohm internal resistance of the VGA creates a voltage divider with the 8 external resistors.
+The 50 ohm internal resistance of the VGA creates a voltage divider with the 8 external resistors.
 
-Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 166
+Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 166 ohms
 
 3.3 * 50 / (50 + 166) = 0.764 V
 
-Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167
+Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167 ohms
 
 3.3 * 50 / (50 + 167) = 0.760 V
 
-Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129
+Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129 ohms
 
 3.3 * 50 / (50 + 129) = 0.922 V
 
 These three voltage values are above 0.75 V and under 1 V, so they fall in the range of the 111 input value. The same method applies to the green and blue inputs.
 
-The three bits for each color can vary resulting in lower output voltages and in many different combinations for colors. There are 8 shades of red, 8 shades of green, and 4 shades of blue. This results in 256 shades of mixed RGB color. The vga display adjusts its color with absense of a color at 0v and strongest color at max voltage.
+The three bits for each color can vary resulting in lower output voltages and in many different combinations for colors. There are 8 shades of red, 8 shades of green, and 4 shades of blue. This results in 256 shades of mixed RGB color per a pixel. The vga display adjusts its color with absense of a color at 0v and strongest color at max voltage.
 
 ## Drawing on the Screen
 
@@ -36,13 +36,13 @@ Before we begin the explanation of drawing the screen, there is some preliminary
 
 There are two modules provided by the template code: the DE0_NANO module and the VGA_DRIVER module. The DE0_NANO module is the main module, responsible for providing a color given a specific pixel. The VGA_DRIVER iterates through every pixel on the monitor, providing these pixels to the DE0_NANO module. Once the VGA_DRIVER receives a color from the DE0_NANO module, it outputs a pixel of that color onto the screen.
 
-The color that is output to the screen is determined by an 8-bit binary number, separated into three sections; three bits represent Red, three bits represent Green, and two bits represent Blue. For instance, given the following signal:
+The color that is output to the screen is determined by an 8-bit binary number, separated into three sections; three bits represent red, three bits represent green, and two bits represent blue. For instance, given the following signal:
 
 > 8’b001_100_10
 	
-Red is set to the value 3’b001, Green is set to the value 3’b100, and Blue is set to the value 2’b10.
+red is set to the value 3’b001, green is set to the value 3’b100, and blue is set to the value 2’b10.
 
-The FPGA is connected to the monitor through a VGA switch, which connects to the FPGA through a VGA connector, which uses the resistances calculated in the DAC section. The template program uses odd-numbered GPIO-0 pins between 9 and 23 to output color to the screen.
+The FPGA is connected to the monitor through a VGA switch which connects to the FPGA through a VGA connector and uses the resistances calculated in the DAC section. The template program uses odd-numbered GPIO-0 pins between 9 and 23 to output color to the screen. Figure 1 shows the pinout of the FPGA.
 
 ![](./Lab3Photos/de0_pinout.png)
 >Figure 1: pinout diagram of the DEO_nano FPGA board. Pins used for color are highlighted.

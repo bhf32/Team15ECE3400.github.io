@@ -8,7 +8,7 @@ In this lab, we will configure an FPGA to be able draw on a screen and send a �
 
 Each of the 3 RGB ports takes in analog input of 0-1V; FPGA outputs 3.3 V max, as seen in from this [link.](http://valhalla.altium.com/Learning-Guides/CR0113%20VGA%20-%208-bit%20VGA%20Controller.pdf)
 
-From the arrangement of the resistors, we can see that it is a simple binary DAC. Using the example in the datasheet and information provided from the lab 3 instructions, the red cable takes 3 bits of input (the first 3 resistors), the green takes 3 bits (the next three resistors), and the blue takes 2 bits (the last two resistors). We can confirm the binary relationship between the resistors and the color bit sizes by looking at the resistances from left to right: 
+From the arrangement of the resistors, we can see that it is a simple binary DAC. Using the example in the datasheet and information provided from the lab 3 instructions, the red cable takes 3 bits of input (the first left 3 resistors), the green takes 3 bits (the next three resistors), and the blue takes 2 bits (the last two right resistors). We can confirm the binary relationship between the resistors and the color bit sizes by looking at the resistances from left to right: 
 
 	269, 604, 1183 (red), 268, 605, 1186 (green), 178, 468 (blue) 
 
@@ -18,32 +18,32 @@ V = V08+V14+V22= 18+14+12 = 0.875 V
 
 since the VGA colors each take 0-1 V inputs. The FPGA outputs a range of 0-3.3 V, but this is taken into account because of the 50 internal resistance of the VGA, which acts like a voltage divider.
 
-Red equivalent resistance at highest input value: 1(1/286)+(1/604)+(1/1128)= 159 
+Red equivalent resistance at highest input value: 1 / ((1/286)+(1/604)+(1/1128))= 159 
 3.3 * 5050 + 159= 0.786 V
 
 0.786 V is above 0.75 V and under 1 V, so it falls in the range of the 111 input value. The same method applies to the green and blue inputs. 
 
-Green equivalent resistance at highest input value: 1(1/286)+(1/605)+(1/1186)= 167 
+Green equivalent resistance at highest input value: 1 / ((1/286)+(1/605)+(1/1186))= 167 
 3.3 * 5050 + 167= 0.760 V
 
-Blue equivalent resistance at highest input value: 1(1/178)+(1/468)= 129 
+Blue equivalent resistance at highest input value: 1 / ((1/178)+(1/468))= 129 
 3.3 * 5050 + 129= 0.912 V
 
 ## Drawing on the Screen
 
 Before we begin the explanation proper, there is some preliminary information to cover.
 
-There are two modules provided by the template code: the DE0_NANO module and the VGA_DRIVER module. The DE0_NANO module is the main module, responsible providing a color given a specific pixel. The VGA_DRIVER iterates through every pixel on the monitor, providing these pixels to the DE0_NANO module. Once the VGA_DRIVER receives a color from the DE0_NANO module, it outputs a pixel of that color onto the screen.
+There are two modules provided by the template code: the DE0_NANO module and the VGA_DRIVER module. The DE0_NANO module is the main module, responsible for providing a color given a specific pixel. The VGA_DRIVER iterates through every pixel on the monitor, providing these pixels to the DE0_NANO module. Once the VGA_DRIVER receives a color from the DE0_NANO module, it outputs a pixel of that color onto the screen.
 
 The color that is output to the screen is determined by an 8-bit binary number, separated into three sections; three bits represent Red, three bits represent Green, and two bits represent Blue. For instance, given the following signal:
 
-8’b001_100_10
+> 8’b001_100_10
 	
 Red is set to the value 3’b001, Green is set to the value 3’b100, and Blue is set to the value 2’b10.
 
 The FPGA is connected to the monitor through a VGA switch, which connects to the FPGA through a VGA connector, which uses the resistances calculated in the DAC section. The template program uses odd-numbered GPIO-0 pins between 9 and 23 to output color to the screen.
 
-
+![](./Lab3Photos/de0_pinout.png)
 >Figure 1: pinout diagram of the DEO_nano FPGA board. Pins used for color are highlighted.
 
 We started by changing the color on the screen. To do this, in DE0_NANO we set the PIXEL_COLOR value to 8'b101_010_11, a pinkish color, in the always@(posedge CLOCK_25) block. 
@@ -95,6 +95,7 @@ To constantly update the location of the block, we used one case statement so on
 >Figure 4. Code snippet of toggle-input case statement.
 
 You can see a video of the blocks moving with toggled inputs [here](https://youtu.be/ciE7AULMfPA)! 
+
 # Acoustics
 
 ## Overview of port declarations and initializations

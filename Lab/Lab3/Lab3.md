@@ -1,10 +1,12 @@
-#Goal:
+# Goal
 
 In this lab, we will configure an FPGA to be able draw on a screen and send a “done” tune to the speaker. This will be implemented in the final system since we will need to map the robot’s path and know when it has finished traversing every square.
 
-#Graphics:
+# Graphics
 
-##DAC: each of the 3 RGB ports takes in analog input of 0-1V; FPGA outputs 3.3 V max http://valhalla.altium.com/Learning-Guides/CR0113%20VGA%20-%208-bit%20VGA%20Controller.pdf
+## DAC 
+
+Each of the 3 RGB ports takes in analog input of 0-1V; FPGA outputs 3.3 V max, as seen in from this [_link._] (http://valhalla.altium.com/Learning-Guides/CR0113%20VGA%20-%208-bit%20VGA%20Controller.pdf)
 
 From the arrangement of the resistors, we can see that it is a simple binary DAC. Using the example in the datasheet and information provided from the lab 3 instructions, the red cable takes 3 bits of input (the first 3 resistors), the green takes 3 bits (the next three resistors), and the blue takes 2 bits (the last two resistors). We can confirm the binary relationship between the resistors and the color bit sizes by looking at the resistances from left to right: 
 
@@ -27,7 +29,7 @@ Green equivalent resistance at highest input value: 1(1/286)+(1/605)+(1/1186)= 1
 Blue equivalent resistance at highest input value: 1(1/178)+(1/468)= 129 
 3.3 * 5050 + 129= 0.912 V
 
-##Drawing on the Screen:
+## Drawing on the Screen
 
 	Before we begin the explanation there is some preliminary information to cover.
 
